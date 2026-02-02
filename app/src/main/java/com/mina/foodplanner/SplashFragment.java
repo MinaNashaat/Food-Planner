@@ -42,6 +42,7 @@ public class SplashFragment extends Fragment {
         caption.setAnimation(anim);
 
 
+
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             NavController navController = NavHostFragment.findNavController(SplashFragment.this);

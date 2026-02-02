@@ -1,5 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
+//    id("androidx.navigation.safeargs")
+    alias(libs.plugins.navigation.safeargs)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -39,8 +42,12 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.fragment)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.lottie)
+    implementation(platform("com.google.firebase:firebase-bom:34.8.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth")
 }
