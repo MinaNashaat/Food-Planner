@@ -33,6 +33,31 @@ public class SplashFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        title = view.findViewById(R.id.title);
+        subtitle = view.findViewById(R.id.subtitle);
+        caption = view.findViewById(R.id.caption);
+        Animation anim = AnimationUtils.loadAnimation(view.getContext(),R.anim.fade_in);
+        title.setAnimation(anim);
+        subtitle.setAnimation(anim);
+        caption.setAnimation(anim);
+
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+
+            NavController navController = NavHostFragment.findNavController(SplashFragment.this);
+
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.splashFragment, true)
+                    .build();
+
+            navController.navigate(
+                    R.id.action_splashFragment_to_loginFragment,
+                    null,
+                    navOptions
+            );
+
+        }, 4000);
+
 
     }
 }
