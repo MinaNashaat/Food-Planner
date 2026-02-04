@@ -19,17 +19,7 @@ public interface MealsAPIService {
     @GET("lookup.php")
     Call<Meals> getMealById(@Query("i") String mealId);
 
-    @GET("random.php")
-    Call<Meals> getRandomMeal();
 
-    @GET("categories.php")
-    Call<Categories> getAllCategories();
-
-    @GET("list.php?c=list")
-    Call<AllCategories> getAllCategoriesString();
-
-    @GET("list.php?a=list")
-    Call<AllAreas> getAllAreasString();
 
     @GET("list.php?i=list")
     Call<Ingredients> getAllIngredients();

@@ -1,0 +1,26 @@
+package com.mina.foodplanner.data.datasource.home.remote;
+
+import com.mina.foodplanner.data.model.AllAreas;
+import com.mina.foodplanner.data.model.AllCategories;
+import com.mina.foodplanner.data.model.Categories;
+import com.mina.foodplanner.data.model.Ingredients;
+import com.mina.foodplanner.data.model.Meals;
+
+import retrofit2.Call;
+import retrofit2.http.GET;
+
+public interface HomeAPIService {
+    @GET("random.php")
+    Call<Meals> getRandomMeal();  // i made this network response only
+
+    @GET("categories.php")
+    Call<Categories> getAllCategories();
+
+    @GET("list.php?c=list")
+    Call<AllCategories> getAllCategoriesString();
+
+    @GET("list.php?a=list")
+    Call<AllAreas> getAllAreasString();
+
+
+}

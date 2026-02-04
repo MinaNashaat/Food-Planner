@@ -57,11 +57,18 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
-            <include layout="@layout/item_meal_of_day"/>
+            <include
+                android:id="@+id/mealOfDayLayout"
+                layout="@layout/item_meal_of_day"/>
 
-            <include layout="@layout/section_categories"/>
+            <include
+                android:id="@+id/categoriesSection"
+                layout="@layout/section_categories"/>
 
-            <include layout="@layout/section_countries"/>
+            <include
+                android:id="@+id/countriesSection"
+                layout="@layout/section_countries"/>
+
 
         </LinearLayout>
     </ScrollView>

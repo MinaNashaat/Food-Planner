@@ -15,20 +15,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Meal Categories"
+            android:layout_weight="1"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/seeAllCategories"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="See All"
-            android:gravity="end"
             android:textColor="#FF7A00"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/categoriesRV"
+        android:id="@+id/allCategoriesRV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
