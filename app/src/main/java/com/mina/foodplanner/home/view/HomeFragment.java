@@ -1,5 +1,6 @@
 package com.mina.foodplanner.home.view;
 
+import android.app.Application;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,25 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mina.foodplanner.R;
 import com.mina.foodplanner.data.model.Meal;
+import com.mina.foodplanner.home.presenter.HomePresenter;
+import com.mina.foodplanner.home.presenter.HomePresenterImp;
 
-public class HomeFragment extends Fragment implements onMealClick {
+public class HomeFragment extends Fragment implements onMealClick, HomeView {
 
     View mealOfDay;
     View categoriesSection;
     View countriesSection;
-
+    HomePresenter homePresenter;
+    ImageView mealImage;
+    TextView mealTitle;
+    TextView mealCategory;
+    TextView seeAllCategories;
+    RecyclerView allCategoriesRV;
+    TextView seeAllCountries;
+    RecyclerView allCountriesRV;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,15 +47,16 @@ public class HomeFragment extends Fragment implements onMealClick {
         mealOfDay = view.findViewById(R.id.mealOfDayLayout);
         categoriesSection = view.findViewById(R.id.categoriesSection);
         countriesSection = view.findViewById(R.id.countriesSection);
-        ImageView mealImage = mealOfDay.findViewById(R.id.mealDayImage);
-        TextView mealTitle = mealOfDay.findViewById(R.id.mealDayName);
-        TextView mealCategory = mealOfDay.findViewById(R.id.mealDayCategory);
-        TextView seeAllCategories = categoriesSection.findViewById(R.id.seeAllCategories);
-        RecyclerView allCategoriesRV = categoriesSection.findViewById(R.id.allCategoriesRV);
+        mealImage = mealOfDay.findViewById(R.id.mealDayImage);
+        mealTitle = mealOfDay.findViewById(R.id.mealDayName);
+        mealCategory = mealOfDay.findViewById(R.id.mealDayCategory);
+        seeAllCategories = categoriesSection.findViewById(R.id.seeAllCategories);
+        allCategoriesRV = categoriesSection.findViewById(R.id.allCategoriesRV);
+        seeAllCountries =  countriesSection.findViewById(R.id.seeAllCountries);
+        allCountriesRV = countriesSection.findViewById(R.id.allCountriesRV);
 
-        TextView seeAllCountries = countriesSection.findViewById(R.id.seeAllCountries);
-        RecyclerView allCountriesRV = countriesSection.findViewById(R.id.allCountriesRV);
-
+        homePresenter = new HomePresenterImp(this);
+        homePresenter.getDayMeal();
 
 
     }
@@ -54,4 +66,32 @@ public class HomeFragment extends Fragment implements onMealClick {
 
     }
 
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void updateDayMeal(Meal meal) {
+        mealTitle.setText(meal.getStrMeal());
+        mealCategory.setText(meal.getStrCategory());
+        Glide.with(this)
+                .load(meal.getStrMealThumb())
+                .into(mealImage);
+    }
+
+    @Override
+    public void noInternet() {
+
+    }
+
+    @Override
+    public void onFailure(String errorMessage) {
+
+    }
 }
