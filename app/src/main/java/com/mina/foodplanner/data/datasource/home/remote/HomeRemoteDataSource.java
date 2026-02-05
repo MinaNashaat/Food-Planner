@@ -1,5 +1,7 @@
 package com.mina.foodplanner.data.datasource.home.remote;
 
+import com.mina.foodplanner.data.model.Categories;
+import com.mina.foodplanner.data.model.Category;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.data.model.Meals;
 import com.mina.foodplanner.data.network.Network;
@@ -45,5 +47,31 @@ public class HomeRemoteDataSource {
         });
     }
 
-    public void
+    public void getAllCategories(CategoriesNetworkResponse callBack){
+
+        Call<Categories> categories = homeAPIService.getAllCategories();
+        categories.enqueue(new Callback<Categories>() {
+            @Override
+            public void onResponse(Call<Categories> call, Response<Categories> response) {
+                if(response.isSuccessful() && response.body()!= null){
+                    List<Category> categoriesList = response.body().categories;
+                    callBack.onSuccess(categoriesList);
+                }
+                else{
+                    callBack.onFailure("Error server");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Categories> call, Throwable t) {
+                if(t instanceof IOException){
+                    callBack.noInternet();
+                }
+                else{
+                    callBack.onFailure("Conversion error");
+                }
+            }
+        });
+
+    }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -16,11 +17,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mina.foodplanner.R;
+import com.mina.foodplanner.data.model.Category;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.home.presenter.HomePresenter;
 import com.mina.foodplanner.home.presenter.HomePresenterImp;
 
-public class HomeFragment extends Fragment implements onMealClick, HomeView {
+import java.util.List;
+
+public class HomeFragment extends Fragment implements onMealClick, HomeView, onCategoryClick {
 
     View mealOfDay;
     View categoriesSection;
@@ -33,6 +37,7 @@ public class HomeFragment extends Fragment implements onMealClick, HomeView {
     RecyclerView allCategoriesRV;
     TextView seeAllCountries;
     RecyclerView allCountriesRV;
+    CategoriesAdapter categoriesAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -55,9 +60,16 @@ public class HomeFragment extends Fragment implements onMealClick, HomeView {
         seeAllCountries =  countriesSection.findViewById(R.id.seeAllCountries);
         allCountriesRV = countriesSection.findViewById(R.id.allCountriesRV);
 
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        allCategoriesRV.setLayoutManager(linearLayoutManager);
+        categoriesAdapter = new CategoriesAdapter();
+        categoriesAdapter.setOnCategoryClick(this);
+        allCategoriesRV.setAdapter(categoriesAdapter);
+
         homePresenter = new HomePresenterImp(this);
         homePresenter.getDayMeal();
-
+        homePresenter.getAllCategories();
 
     }
 
@@ -86,12 +98,32 @@ public class HomeFragment extends Fragment implements onMealClick, HomeView {
     }
 
     @Override
-    public void noInternet() {
+    public void noInternetDayMeal() {
 
     }
 
     @Override
     public void onFailure(String errorMessage) {
+
+    }
+
+    @Override
+    public void updateCategories(List<Category> categories) {
+        categoriesAdapter.setCategoryList(categories);
+    }
+
+    @Override
+    public void noInternetCategories() {
+
+    }
+
+    @Override
+    public void onFailureCategories(String errorMessage) {
+
+    }
+
+    @Override
+    public void onCategorySelected(Category category) {
 
     }
 }

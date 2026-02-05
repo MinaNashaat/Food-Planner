@@ -1,11 +1,14 @@
 package com.mina.foodplanner.home.presenter;
 
 import com.mina.foodplanner.data.HomeRepo;
+import com.mina.foodplanner.data.datasource.home.remote.CategoriesNetworkResponse;
 import com.mina.foodplanner.data.datasource.home.remote.RandomMealNetworkResponse;
 import com.mina.foodplanner.data.model.AreaString;
 import com.mina.foodplanner.data.model.Category;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.home.view.HomeView;
+
+import java.util.List;
 
 public class HomePresenterImp implements HomePresenter{
 
@@ -27,7 +30,7 @@ public class HomePresenterImp implements HomePresenter{
 
             @Override
             public void noInternet() {
-                homeView.noInternet();
+                homeView.noInternetDayMeal();
             }
 
             @Override
@@ -44,7 +47,22 @@ public class HomePresenterImp implements HomePresenter{
 
     @Override
     public void getAllCategories() {
+        homeRepo.getAllCategories(new CategoriesNetworkResponse() {
+            @Override
+            public void onSuccess(List<Category> categories) {
+                homeView.updateCategories(categories);
+            }
 
+            @Override
+            public void noInternet() {
+                homeView.noInternetCategories();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                homeView.onFailureCategories(errorMessage);
+            }
+        });
     }
 
     @Override
