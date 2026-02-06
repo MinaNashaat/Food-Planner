@@ -38,10 +38,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/searchET"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/searchET">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,8 +50,8 @@
             android:padding="16dp">
 
             <TextView
-                android:layout_height="wrap_content"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Meal of the Day"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
@@ -59,30 +59,19 @@
 
             <include
                 android:id="@+id/mealOfDayLayout"
-                layout="@layout/item_meal_of_day"/>
+                layout="@layout/item_meal_of_day" />
 
             <include
                 android:id="@+id/categoriesSection"
-                layout="@layout/section_categories"/>
+                layout="@layout/section_categories" />
 
             <include
                 android:id="@+id/countriesSection"
-                layout="@layout/section_countries"/>
+                layout="@layout/section_countries" />
 
 
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_menu"
-        android:background="#151515"
-        app:itemIconTint="@color/bottom_nav_selector"
-        app:itemTextColor="@color/bottom_nav_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

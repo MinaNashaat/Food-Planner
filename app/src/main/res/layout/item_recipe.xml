@@ -55,18 +55,12 @@
             app:layout_constraintEnd_toEndOf="parent">
 
             <TextView
+                android:id="@+id/mealTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Salmon Poke Bowl"
-                android:textColor="@android:color/white"
+                android:textColor="#FF7A00"
                 android:textStyle="bold"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="25 mins  •  Easy"
-                android:textColor="#AAAAAA"
-                android:textSize="12sp"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

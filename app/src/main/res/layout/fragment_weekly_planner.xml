@@ -33,10 +33,10 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/daysRV"
-        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/daysRV">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -48,8 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:orientation="vertical"
-                >
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -57,35 +56,25 @@
                     android:text="Monday's Meals"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="3 ITEMS"
                     android:textColor="#AAAAAA"
-                    android:textSize="12sp"/>
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/mealsRV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="12dp" />
 
         </LinearLayout>
     </ScrollView>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:menu="@menu/bottom_menu"
-        android:background="#151515"
-        app:itemIconTint="@color/bottom_nav_selector"
-        app:itemTextColor="@color/bottom_nav_selector"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

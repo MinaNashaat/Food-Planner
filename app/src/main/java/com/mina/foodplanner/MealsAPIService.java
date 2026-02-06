@@ -13,8 +13,7 @@ import retrofit2.http.Query;
 
 public interface MealsAPIService {
 
-    @GET("search.php")
-    Call<Meals> searchMealsByName(@Query("s") String mealName);
+
 
     @GET("lookup.php")
     Call<Meals> getMealById(@Query("i") String mealId);

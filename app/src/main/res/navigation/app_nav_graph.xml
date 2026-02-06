@@ -10,4 +10,19 @@
         android:name="com.mina.foodplanner.home.view.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home"/>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.mina.foodplanner.search.view.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search"/>
+    <fragment
+        android:id="@+id/weeklyPlannerFragment"
+        android:name="com.mina.foodplanner.WeeklyPlannerFragment"
+        android:label="WeeklyPlannerFragment"
+        tools:layout="@layout/fragment_weekly_planner"/>
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.mina.foodplanner.FavouriteFragment"
+        android:label="FavouriteFragment"
+        tools:layout="@layout/fragment_favourite"/>
 </navigation>
