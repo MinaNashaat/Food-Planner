@@ -2,6 +2,7 @@ package com.mina.foodplanner.search.presenter;
 
 
 
+import android.content.Context;
 import android.util.Log;
 
 import com.mina.foodplanner.data.SearchReo;
@@ -15,8 +16,9 @@ public class SearchPresenterImp implements SearchPresenter{
 
     SearchReo searchReo;
     SearchView searchView;
-    public SearchPresenterImp(SearchView searchView) {
-        this.searchReo = new SearchReo();
+
+    public SearchPresenterImp(SearchView searchView, Context context) {
+        this.searchReo = new SearchReo(context);
         this.searchView = searchView;
     }
 
@@ -44,5 +46,10 @@ public class SearchPresenterImp implements SearchPresenter{
                 searchView.onFailure(message);
             }
         });
+    }
+
+    @Override
+    public void addToFavorite(Meal meal) {
+        searchReo.addToFavorite(meal);
     }
 }

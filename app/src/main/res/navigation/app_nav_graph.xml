@@ -22,7 +22,7 @@
         tools:layout="@layout/fragment_weekly_planner"/>
     <fragment
         android:id="@+id/favouriteFragment"
-        android:name="com.mina.foodplanner.FavouriteFragment"
+        android:name="com.mina.foodplanner.favorites.view.FavouriteFragment"
         android:label="FavouriteFragment"
         tools:layout="@layout/fragment_favourite"/>
 </navigation>

@@ -60,7 +60,7 @@ public class SearchFragment extends Fragment implements SearchView, onMealSelect
 
         searchAdapter = new SearchAdapter();
         searchAdapter.setOnMealClick(this);
-        searchPresenter = new SearchPresenterImp(this);
+        searchPresenter = new SearchPresenterImp(this,view.getContext());
         trendingRV.setAdapter(searchAdapter);
 
         searchET.addTextChangedListener(new TextWatcher() {
@@ -106,6 +106,6 @@ public class SearchFragment extends Fragment implements SearchView, onMealSelect
 
     @Override
     public void addToFav(Meal meal) {
-
+        searchPresenter.addToFavorite(meal);
     }
 }
