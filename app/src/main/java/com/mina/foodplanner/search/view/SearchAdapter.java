@@ -53,6 +53,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MealViewHo
 
     public void clearList(){
         this.mealList.clear();
+        notifyDataSetChanged();
     }
 
     class MealViewHolder extends RecyclerView.ViewHolder {
@@ -80,12 +81,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.MealViewHo
 
             itemView.setOnClickListener(v -> {
                 onMealSelected.showMealDetails(meal);
-
             });
 
             favIcon.setOnClickListener(v -> {
                 onMealSelected.addToFav(meal);
-
             });
         }
     }

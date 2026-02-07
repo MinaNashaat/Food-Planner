@@ -29,9 +29,6 @@ public class SearchRemoteDataSource {
                     callBack.onSuccess(meals);
 
                 }
-                else if(response.body().meals == null){
-                    callBack.nothingMatchTheSearch("Nothing Match The Search");
-                }
                 else{
                     callBack.onFailure("Error server");
                 }

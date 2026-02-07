@@ -38,8 +38,7 @@ public class SearchFragment extends Fragment implements SearchView, onMealSelect
     SearchAdapter searchAdapter;
     SearchPresenter searchPresenter;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
@@ -96,8 +95,9 @@ public class SearchFragment extends Fragment implements SearchView, onMealSelect
 
     @Override
     public void onFailure(String errorMessage) {
-        searchAdapter.clearList();
+
     }
+
 
     @Override
     public void showMealDetails(Meal meal) {

@@ -6,8 +6,7 @@ import com.mina.foodplanner.data.model.Meal;
 
 public interface HomePresenter {
     void getDayMeal();
-    void showMealDetails(Meal meal);
-
+    void showDayMealDetails();
     void getAllCategories();
     void showAllCategories();
     void showCategoryMeals(Category category);

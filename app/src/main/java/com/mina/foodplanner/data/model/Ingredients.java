@@ -1,7 +1,11 @@
 package com.mina.foodplanner.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class Ingredients {
-    List<Ingredient> ingredients;
+
+    @SerializedName("meals")
+    public List<Ingredient> ingredients;
 }

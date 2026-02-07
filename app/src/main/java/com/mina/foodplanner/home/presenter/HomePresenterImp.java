@@ -14,6 +14,7 @@ public class HomePresenterImp implements HomePresenter{
 
     HomeRepo homeRepo;
     HomeView homeView;
+    private Meal dayMeal;
 
     public HomePresenterImp(HomeView homeView) {
         this.homeRepo = new HomeRepo();
@@ -25,6 +26,7 @@ public class HomePresenterImp implements HomePresenter{
         homeRepo.getDayMeal(new RandomMealNetworkResponse() {
             @Override
             public void onSuccess(Meal meal) {
+                dayMeal = meal;
                 homeView.updateDayMeal(meal);
             }
 
@@ -40,9 +42,10 @@ public class HomePresenterImp implements HomePresenter{
         });
     }
 
-    @Override
-    public void showMealDetails(Meal meal) {
 
+    @Override
+    public void showDayMealDetails() {
+        homeView.showMealDetails(dayMeal);
     }
 
     @Override

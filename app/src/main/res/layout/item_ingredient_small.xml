@@ -8,11 +8,13 @@
     android:background="@drawable/bg_ingredient_item">
 
     <ImageView
+        android:id="@+id/ingredientImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/burger"/>
 
     <TextView
+        android:id="@+id/ingredientName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chicken"
@@ -21,6 +23,7 @@
         android:layout_marginTop="6dp"/>
 
     <TextView
+        android:id="@+id/ingredientMeasure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="500g"

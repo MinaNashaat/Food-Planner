@@ -13,6 +13,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.mina.foodplanner.data.IngredientsRepo;
+import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsNetworkResponse;
+import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsRemoteDataSource;
+import com.mina.foodplanner.data.model.Ingredient;
+
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -37,6 +43,8 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("minanashaat","ID = " + uID);
         Log.d("minanashaat","email = " + email);
         Log.d("minanashaat","name = " + name);
+
+        IngredientsRepo.getInstance().getIngredients();
 
     }
 }

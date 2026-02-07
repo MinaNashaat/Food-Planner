@@ -1,6 +1,6 @@
 package com.mina.foodplanner.home.view;
 
-import android.app.Application;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mina.foodplanner.R;
+import com.mina.foodplanner.recipedetails.view.RecipeDetailsActivity;
 import com.mina.foodplanner.data.model.Category;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.home.presenter.HomePresenter;
@@ -71,12 +73,21 @@ public class HomeFragment extends Fragment implements onMealClick, HomeView, onC
         homePresenter.getDayMeal();
         homePresenter.getAllCategories();
 
+        mealOfDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                homePresenter.showDayMealDetails();
+            }
+        });
     }
 
     @Override
     public void showMealDetails(Meal meal) {
-
+        Intent intent = new Intent(requireActivity(), RecipeDetailsActivity.class);
+        intent.putExtra("meal", meal);
+        startActivity(intent);
     }
+
 
     @Override
     public void showLoading() {

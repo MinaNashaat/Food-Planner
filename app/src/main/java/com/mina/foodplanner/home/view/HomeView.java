@@ -15,4 +15,7 @@ public interface HomeView {
     void updateCategories(List<Category> categories);
     void noInternetCategories();
     void onFailureCategories(String errorMessage);
+
+    void showMealDetails(Meal meal);
+
 }

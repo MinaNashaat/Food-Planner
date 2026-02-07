@@ -41,10 +41,6 @@ public class SearchPresenterImp implements SearchPresenter{
                 searchView.onFailure(errorMessage);
             }
 
-            @Override
-            public void nothingMatchTheSearch(String message) {
-                searchView.onFailure(message);
-            }
         });
     }
 

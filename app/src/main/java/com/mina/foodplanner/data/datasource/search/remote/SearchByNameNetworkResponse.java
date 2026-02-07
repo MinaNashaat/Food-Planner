@@ -8,5 +8,4 @@ public interface SearchByNameNetworkResponse {
     void onSuccess(List<Meal> meal);
     void noInternet();
     void onFailure(String errorMessage);
-    void nothingMatchTheSearch(String message);
 }
