@@ -1,5 +1,6 @@
 package com.mina.foodplanner.search.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mina.foodplanner.R;
+import com.mina.foodplanner.allcategories.view.AllCategoriesActivity;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.home.view.onMealClick;
 import com.mina.foodplanner.search.presenter.SearchPresenter;
@@ -77,6 +79,12 @@ public class SearchFragment extends Fragment implements SearchView, onMealSelect
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
+        });
+        categoriesbTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(view.getContext(), AllCategoriesActivity.class));
             }
         });
     }

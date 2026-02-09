@@ -26,8 +26,7 @@ public interface MealsAPIService {
     @GET("filter.php")
     Call<FilterResult> filterMealsByIngredient(@Query("i") String ingredient);
 
-    @GET("filter.php")
-    Call<FilterResult> filterMealsByCategory(@Query("c") String category);
+
 
     @GET("filter.php")
     Call<FilterResult> filterMealsByArea(@Query("a") String area);

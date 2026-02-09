@@ -15,6 +15,12 @@
         android:theme="@style/Theme.MealMaster"
         tools:targetApi="31">
         <activity
+            android:name=".categorymeals.view.CategoryMealsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".allcategories.view.AllCategoriesActivity"
+            android:exported="false" />
+        <activity
             android:name=".recipedetails.view.RecipeDetailsActivity"
             android:exported="false" />
         <activity
