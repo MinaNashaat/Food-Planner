@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_search"/>
     <fragment
         android:id="@+id/weeklyPlannerFragment"
-        android:name="com.mina.foodplanner.WeeklyPlannerFragment"
+        android:name="com.mina.foodplanner.planner.view.WeeklyPlannerFragment"
         android:label="WeeklyPlannerFragment"
         tools:layout="@layout/fragment_weekly_planner"/>
     <fragment

@@ -1,24 +1,35 @@
 package com.mina.foodplanner.recipedetails.presenter;
 
+import android.app.DatePickerDialog;
+import android.content.Context;
 import android.util.Pair;
 
 import com.mina.foodplanner.data.IngredientsRepo;
+import com.mina.foodplanner.data.PlannerRepo;
 import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsNetworkResponse;
 import com.mina.foodplanner.data.model.Ingredient;
 import com.mina.foodplanner.data.model.Meal;
+import com.mina.foodplanner.data.model.UserPlannedMeal;
 import com.mina.foodplanner.recipedetails.view.RecipeDetailsView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter{
+public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter {
     RecipeDetailsView view;
+    PlannerRepo plannerRepo;
 
-    public RecipeDetailsPresenterImp(RecipeDetailsView view) {
+    public RecipeDetailsPresenterImp(RecipeDetailsView view, Context context) {
         this.view = view;
+        plannerRepo = new PlannerRepo(context);
     }
+
     @Override
     public void loadMeal(Meal meal) {
         if (meal == null)
@@ -32,6 +43,40 @@ public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter{
             view.playYoutubeVideo(videoId);
         }
     }
+
+    @Override
+    public void addToPlanner(Meal meal, Context context) {
+
+        Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                (view, year, month, dayOfMonth) -> {
+
+                    Calendar selectedCalendar = Calendar.getInstance();
+                    selectedCalendar.set(year, month, dayOfMonth);
+
+                    String selectedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                            .format(selectedCalendar.getTime());
+
+                    plannerRepo.insertUserPlannedMeal(
+                            new UserPlannedMeal(
+                                    "mina@gmail.com",
+                                    selectedDate,
+                                    meal
+                            )
+                    );
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+
+        datePickerDialog.getDatePicker()
+                .setMinDate(System.currentTimeMillis());
+
+        datePickerDialog.show();
+    }
+
 
     private static String extractYoutubeVideoId(String url) {
         String videoId = null;

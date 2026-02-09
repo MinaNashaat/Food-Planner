@@ -3,6 +3,7 @@ package com.mina.foodplanner.recipedetails.view;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -46,17 +47,22 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         addToPlanBtnAct = findViewById(R.id.addToPlanBtnAct);
         ingredientsRVAct = findViewById(R.id.ingredientsRVAct);
         youtubePlayerView = findViewById(R.id.youtubePlayerView);
-        presenter = new RecipeDetailsPresenterImp(this);
+        presenter = new RecipeDetailsPresenterImp(this,this);
         ingredientsAdapter = new IngredientsAdapter();
         ingredientsRVAct.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         ingredientsRVAct.setAdapter(ingredientsAdapter);
         Meal meal = (Meal) getIntent().getSerializableExtra("meal");
-//        Log.d("minanashaat","the meal name in new activity is"+meal.getStrMeal());
 
         presenter.loadMeal(meal);
 
         getLifecycle().addObserver(youtubePlayerView);
 
+        addToPlanBtnAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.addToPlanner(meal,RecipeDetailsActivity.this);
+            }
+        });
     }
 
     @Override

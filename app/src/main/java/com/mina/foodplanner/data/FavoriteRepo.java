@@ -18,11 +18,11 @@ public class FavoriteRepo {
         this.favoriteMealsLocalDataSource = new FavoriteMealsLocalDataSource(application);
     }
 
-    public void insertProduct(Meal meal){
+    public void insertMeal(Meal meal){
         favoriteMealsLocalDataSource.insertMeal(meal);
 
     }
-    public void deleteProduct(Meal meal){
+    public void deleteMeal(Meal meal){
         favoriteMealsLocalDataSource.deleteMeal(meal);
     }
 
