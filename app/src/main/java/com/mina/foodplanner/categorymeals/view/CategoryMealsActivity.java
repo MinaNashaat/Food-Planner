@@ -47,7 +47,7 @@ public class CategoryMealsActivity extends AppCompatActivity implements OnCatego
         categoryMealsPresenter = new CategoryMealsPresenterImp(this,this);
         categoryMealsPresenter.getCategoryMeals(category.getStrCategory());
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         favoritesRVCatMealAct.setLayoutManager(linearLayoutManager);
 

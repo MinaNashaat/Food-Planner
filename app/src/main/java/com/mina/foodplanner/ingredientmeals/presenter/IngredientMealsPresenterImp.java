@@ -1,35 +1,35 @@
-package com.mina.foodplanner.categorymeals.presenter;
+package com.mina.foodplanner.ingredientmeals.presenter;
 
-import com.mina.foodplanner.categorymeals.view.CategoryMealsView;
-import com.mina.foodplanner.categorymeals.view.SpecificCategoryMealView;
 import com.mina.foodplanner.data.FilteredMealsRepo;
 import com.mina.foodplanner.data.datasource.filteredmeals.remote.FilteredMealsNetworkResponse;
 import com.mina.foodplanner.data.datasource.filteredmeals.remote.MealByIDNetworkResponse;
 import com.mina.foodplanner.data.model.FilteredMeal;
 import com.mina.foodplanner.data.model.Meal;
+import com.mina.foodplanner.ingredientmeals.view.IngredientMealsView;
+import com.mina.foodplanner.ingredientmeals.view.SpecificIngredientMealView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryMealsPresenterImp implements CategoryMealsPresenter {
+public class IngredientMealsPresenterImp implements IngredientMealsPresenter{
+
     FilteredMealsRepo categoryMealsRepo;
-    CategoryMealsView categoryMealsView;
-    SpecificCategoryMealView specificCategoryMealView;
+    IngredientMealsView ingredientMealsView;
+    SpecificIngredientMealView specificIngredientMealView;
     private List<FilteredMeal> allMeals;
-    public CategoryMealsPresenterImp(CategoryMealsView categoryMealsView, SpecificCategoryMealView specificCategoryMealView) {
+    public IngredientMealsPresenterImp(IngredientMealsView ingredientMealsView, SpecificIngredientMealView specificIngredientMealView) {
         this.categoryMealsRepo = new FilteredMealsRepo();
-        this.categoryMealsView = categoryMealsView;
-        this.specificCategoryMealView = specificCategoryMealView;
+        this.ingredientMealsView = ingredientMealsView;
+        this.specificIngredientMealView = specificIngredientMealView;
     }
 
     @Override
-    public void getCategoryMeals(String category) {
-        categoryMealsRepo.getCategoryMeals(category, new FilteredMealsNetworkResponse() {
+    public void getIngredientMeals(String ingredient) {
+        categoryMealsRepo.getIngredientsMeals(ingredient, new FilteredMealsNetworkResponse() {
             @Override
             public void onSuccess(List<FilteredMeal> meals) {
                 allMeals = meals;
-                categoryMealsView.updateCategoryMealsList(meals);
-
+                ingredientMealsView.updateCategoryMealsList(meals);
             }
 
             @Override
@@ -49,7 +49,7 @@ public class CategoryMealsPresenterImp implements CategoryMealsPresenter {
         if (allMeals == null) return;
 
         if (query == null || query.trim().isEmpty()) {
-            categoryMealsView.updateCategoryMealsList(allMeals);
+            ingredientMealsView.updateCategoryMealsList(allMeals);
             return;
         }
 
@@ -61,15 +61,15 @@ public class CategoryMealsPresenterImp implements CategoryMealsPresenter {
             }
         }
 
-        categoryMealsView.updateCategoryMealsList(filtered);
+        ingredientMealsView.updateCategoryMealsList(filtered);
     }
 
     @Override
-    public void getMealByID(String mealID){
+    public void getMealByID(String mealID) {
         categoryMealsRepo.getMealByID(mealID, new MealByIDNetworkResponse() {
             @Override
             public void onSuccess(List<Meal> meals) {
-                specificCategoryMealView.openMealDetailsActivity(meals);
+                specificIngredientMealView.openMealDetailsActivity(meals);
             }
 
             @Override
@@ -83,5 +83,4 @@ public class CategoryMealsPresenterImp implements CategoryMealsPresenter {
             }
         });
     }
-
 }

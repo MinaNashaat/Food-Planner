@@ -1,6 +1,5 @@
-package com.mina.foodplanner.data.datasource.categorymeals.remote;
+package com.mina.foodplanner.data.datasource.filteredmeals.remote;
 
-import com.mina.foodplanner.data.model.FilteredMeal;
 import com.mina.foodplanner.data.model.Meal;
 
 import java.util.List;

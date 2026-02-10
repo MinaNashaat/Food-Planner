@@ -23,8 +23,7 @@ public interface MealsAPIService {
     @GET("list.php?i=list")
     Call<Ingredients> getAllIngredients();
 
-    @GET("filter.php")
-    Call<FilterResult> filterMealsByIngredient(@Query("i") String ingredient);
+
 
 
 

@@ -1,8 +1,7 @@
-package com.mina.foodplanner.data.datasource.categorymeals.remote;
+package com.mina.foodplanner.data.datasource.filteredmeals.remote;
 
 import android.util.Log;
 
-import com.mina.foodplanner.data.model.Category;
 import com.mina.foodplanner.data.model.FilterResult;
 import com.mina.foodplanner.data.model.FilteredMeal;
 import com.mina.foodplanner.data.model.Meal;
@@ -16,15 +15,42 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CategoryMealsRemoteDataSource {
-    CategoryMealsAPIService categoryMealsAPIService;
+public class FilteredMealsRemoteDataSource {
+    FilteredMealsAPIService categoryMealsAPIService;
 
-    public CategoryMealsRemoteDataSource() {
+    public FilteredMealsRemoteDataSource() {
         this.categoryMealsAPIService = Network.getInstance().getCategoryMealsAPIService();
     }
 
-    public void getCategoryMeals(String categoryMealName, CategoriesMealsNetworkResponse callBack){
+    public void getCategoryMeals(String categoryMealName, FilteredMealsNetworkResponse callBack){
         Call<FilterResult> meals =  categoryMealsAPIService.filterMealsByCategory(categoryMealName);
+        meals.enqueue(new Callback<FilterResult>() {
+            @Override
+            public void onResponse(Call<FilterResult> call, Response<FilterResult> response) {
+                if(response.isSuccessful() && response.body()!= null){
+                    List<FilteredMeal> filteredMeals = response.body().filteredMeals;
+                    callBack.onSuccess(filteredMeals);
+                    Log.d("minanashaat" , "yaraaaab" + filteredMeals.size());
+                }
+                else{
+                    callBack.onFailure("Error server");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FilterResult> call, Throwable t) {
+                if(t instanceof IOException){
+                    callBack.noInternet();
+                }
+                else{
+                    callBack.onFailure("Conversion error");
+                }
+            }
+        });
+    }
+
+    public void getIngredientMeals(String ingredientName, FilteredMealsNetworkResponse callBack){
+        Call<FilterResult> meals =  categoryMealsAPIService.filterMealsByIngredient(ingredientName);
         meals.enqueue(new Callback<FilterResult>() {
             @Override
             public void onResponse(Call<FilterResult> call, Response<FilterResult> response) {

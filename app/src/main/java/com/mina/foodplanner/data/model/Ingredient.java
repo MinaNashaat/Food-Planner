@@ -1,6 +1,8 @@
 package com.mina.foodplanner.data.model;
 
-public class Ingredient {
+import java.io.Serializable;
+
+public class Ingredient implements Serializable {
     String idIngredient;
     String strDescription;
     String strIngredient;

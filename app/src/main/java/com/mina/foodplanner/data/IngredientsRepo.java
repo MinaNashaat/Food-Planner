@@ -14,7 +14,7 @@ public class IngredientsRepo {
 
     private static List<Ingredient> ingredients;
 
-    private IngredientsRepo() {
+    public IngredientsRepo() {
         remoteDataSource = new IngredientsRemoteDataSource();
     }
 
@@ -54,4 +54,9 @@ public class IngredientsRepo {
         }
         return null;
     }
+
+    public void getIngredients(IngredientsNetworkResponse callBack) {
+        remoteDataSource.getAllIngredients(callBack);
+    }
+
 }
