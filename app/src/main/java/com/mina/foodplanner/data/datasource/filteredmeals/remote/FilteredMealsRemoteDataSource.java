@@ -76,6 +76,31 @@ public class FilteredMealsRemoteDataSource {
         });
     }
 
+    public void getAreaMeals(String area, FilteredMealsNetworkResponse callBack){
+        Call<FilterResult> meals = categoryMealsAPIService.filterMealsByArea(area);
+        meals.enqueue(new Callback<FilterResult>() {
+            @Override
+            public void onResponse(Call<FilterResult> call, Response<FilterResult> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    callBack.onSuccess(response.body().filteredMeals);
+                } else {
+                    callBack.onFailure("Server error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FilterResult> call, Throwable t) {
+                if (t instanceof IOException) {
+                    callBack.noInternet();
+                } else {
+                    callBack.onFailure("Conversion error");
+                }
+            }
+        });
+    }
+
+
+
     public void getMealById(String mealID, MealByIDNetworkResponse callBack){
         Call<Meals> mealsCall = categoryMealsAPIService.getMealById(mealID);
         mealsCall.enqueue(new Callback<Meals>() {

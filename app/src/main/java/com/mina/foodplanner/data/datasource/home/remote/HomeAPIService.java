@@ -19,8 +19,7 @@ public interface HomeAPIService {
     @GET("list.php?c=list")
     Call<AllCategories> getAllCategoriesString();
 
-    @GET("list.php?a=list")
-    Call<AllAreas> getAllAreasString();
+
 
 
 }

@@ -1,7 +1,10 @@
 package com.mina.foodplanner.data.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class AllAreas {
-    List<AreaString> areaStringList;
+    @SerializedName("meals")
+    public List<AreaString> areaStringList;
 }

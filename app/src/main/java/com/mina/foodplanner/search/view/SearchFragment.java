@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mina.foodplanner.R;
+import com.mina.foodplanner.allareas.view.AllAreasActivity;
 import com.mina.foodplanner.allcategories.view.AllCategoriesActivity;
 import com.mina.foodplanner.allingredients.view.AllIngredientsActivity;
 import com.mina.foodplanner.data.model.Meal;
@@ -94,13 +95,18 @@ public class SearchFragment extends Fragment implements SearchView, onMealSelect
                 startActivity(new Intent(view.getContext(), AllIngredientsActivity.class));
             }
         });
+        areaBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(view.getContext(), AllAreasActivity.class));
+            }
+        });
     }
 
 
     @Override
     public void updateMealSerachList(List<Meal> meals) {
         searchAdapter.setMealList(meals);
-//        Log.d("minanashaat", "i am in fragment and first name is "+ meals.get(0).getStrMeal());
     }
 
     @Override

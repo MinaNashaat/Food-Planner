@@ -23,4 +23,9 @@ public class FilteredMealsRepo {
         categoryMealsRemoteDataSource.getIngredientMeals(ingredientMealName,callBack);
     }
 
+    public void getAreaMeals(String area, FilteredMealsNetworkResponse callBack){
+        categoryMealsRemoteDataSource.getAreaMeals(area, callBack);
+    }
+
+
 }

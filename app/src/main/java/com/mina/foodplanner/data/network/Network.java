@@ -1,6 +1,7 @@
 package com.mina.foodplanner.data.network;
 
 import com.mina.foodplanner.MealsAPIService;
+import com.mina.foodplanner.data.datasource.areas.remote.AreaAPIService;
 import com.mina.foodplanner.data.datasource.filteredmeals.remote.FilteredMealsAPIService;
 import com.mina.foodplanner.data.datasource.home.remote.HomeAPIService;
 import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsAPIService;
@@ -31,6 +32,10 @@ public class Network {
     public FilteredMealsAPIService getCategoryMealsAPIService(){
         return retrofit.create(FilteredMealsAPIService.class);
     }
+    public AreaAPIService getAreaAPIService(){
+        return retrofit.create(AreaAPIService.class);
+    }
+
     private Network(){
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)

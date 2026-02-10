@@ -16,4 +16,7 @@ public interface FilteredMealsAPIService {
 
     @GET("lookup.php")
     Call<Meals> getMealById(@Query("i") String mealId);
+
+    @GET("filter.php")
+    Call<FilterResult> filterMealsByArea(@Query("a") String area);
 }
