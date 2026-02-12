@@ -1,5 +1,6 @@
 package com.mina.foodplanner.favorites.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.mina.foodplanner.data.FavoriteRepo;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.favorites.presenter.FavoritePresenter;
 import com.mina.foodplanner.favorites.presenter.FavoritePresenterImp;
+import com.mina.foodplanner.recipedetails.view.RecipeDetailsActivity;
 
 import java.util.List;
 
@@ -59,5 +61,12 @@ public class FavouriteFragment extends Fragment implements OnFavoriteClickListen
     @Override
     public void onClick(Meal meal) {
         favoritePresenter.deleteMeal(meal);
+    }
+
+    @Override
+    public void showMealDetails(Meal meal) {
+        Intent intent = new Intent(requireActivity(), RecipeDetailsActivity.class);
+        intent.putExtra("meal", meal);
+        startActivity(intent);
     }
 }

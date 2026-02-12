@@ -6,6 +6,7 @@ import android.util.Pair;
 
 import com.mina.foodplanner.data.IngredientsRepo;
 import com.mina.foodplanner.data.PlannerRepo;
+import com.mina.foodplanner.data.SharedPrefrencesRepo;
 import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsNetworkResponse;
 import com.mina.foodplanner.data.model.Ingredient;
 import com.mina.foodplanner.data.model.Meal;
@@ -24,10 +25,11 @@ import java.util.regex.Pattern;
 public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter {
     RecipeDetailsView view;
     PlannerRepo plannerRepo;
-
+    SharedPrefrencesRepo sharedPrefrencesRepo;
     public RecipeDetailsPresenterImp(RecipeDetailsView view, Context context) {
         this.view = view;
         plannerRepo = new PlannerRepo(context);
+        sharedPrefrencesRepo = new SharedPrefrencesRepo(context);
     }
 
     @Override
@@ -57,10 +59,10 @@ public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter {
 
                     String selectedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                             .format(selectedCalendar.getTime());
-
+                    String email = sharedPrefrencesRepo.getUserEmail();
                     plannerRepo.insertUserPlannedMeal(
                             new UserPlannedMeal(
-                                    "mina@gmail.com",
+                                    email,
                                     selectedDate,
                                     meal
                             )
@@ -75,6 +77,13 @@ public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter {
                 .setMinDate(System.currentTimeMillis());
 
         datePickerDialog.show();
+    }
+
+    @Override
+    public void isFavourite(Meal meal) {
+        int count = plannerRepo.isFavourite(meal.getIdMeal());
+        boolean isFavourite = count != 0;
+        view.showOrHideFavourite(isFavourite);
     }
 
 

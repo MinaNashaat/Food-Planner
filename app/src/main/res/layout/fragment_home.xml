@@ -14,25 +14,11 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_margin="16dp"/>
 
-    <EditText
-        android:id="@+id/searchET"
-        android:layout_width="0dp"
-        android:layout_height="44dp"
-        android:layout_marginHorizontal="16dp"
-        android:background="@drawable/bg_input"
-        android:drawableStart="@drawable/baseline_search_24"
-        android:drawablePadding="8dp"
-        android:hint="Search recipes..."
-        android:padding="12dp"
-        android:textColor="@android:color/white"
-        android:textColorHint="#888888"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appName" />
 
     <ScrollView
         android:layout_width="0dp"
@@ -41,7 +27,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/searchET">
+        app:layout_constraintTop_toBottomOf="@+id/appName">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -65,9 +51,9 @@
                 android:id="@+id/categoriesSection"
                 layout="@layout/section_categories" />
 
-            <include
-                android:id="@+id/countriesSection"
-                layout="@layout/section_countries" />
+<!--            <include-->
+<!--                android:id="@+id/countriesSection"-->
+<!--                layout="@layout/section_countries" />-->
 
 
         </LinearLayout>

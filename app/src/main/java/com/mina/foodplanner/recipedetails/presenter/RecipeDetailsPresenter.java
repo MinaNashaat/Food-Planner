@@ -7,4 +7,6 @@ import com.mina.foodplanner.data.model.Meal;
 public interface RecipeDetailsPresenter {
     void loadMeal(Meal meal);
     void addToPlanner(Meal meal, Context context);
+    void isFavourite(Meal meal);
+
 }

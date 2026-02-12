@@ -70,6 +70,9 @@ public class Meal implements Serializable {
     private String strTags;
     private String strYoutube;
 
+    public Meal() {
+
+    }
 
     public String getDateModified() {
         return dateModified;

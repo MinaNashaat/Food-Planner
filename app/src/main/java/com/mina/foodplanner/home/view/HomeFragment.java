@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.mina.foodplanner.R;
+import com.mina.foodplanner.allcategories.view.AllCategoriesActivity;
+import com.mina.foodplanner.categorymeals.view.CategoryMealsActivity;
 import com.mina.foodplanner.recipedetails.view.RecipeDetailsActivity;
 import com.mina.foodplanner.data.model.Category;
 import com.mina.foodplanner.data.model.Meal;
@@ -53,14 +55,14 @@ public class HomeFragment extends Fragment implements onMealClick, HomeView, onC
         super.onViewCreated(view, savedInstanceState);
         mealOfDay = view.findViewById(R.id.mealOfDayLayout);
         categoriesSection = view.findViewById(R.id.categoriesSection);
-        countriesSection = view.findViewById(R.id.countriesSection);
+//        countriesSection = view.findViewById(R.id.countriesSection);
         mealImage = mealOfDay.findViewById(R.id.mealDayImage);
         mealTitle = mealOfDay.findViewById(R.id.mealDayName);
         mealCategory = mealOfDay.findViewById(R.id.mealDayCategory);
         seeAllCategories = categoriesSection.findViewById(R.id.seeAllCategories);
         allCategoriesRV = categoriesSection.findViewById(R.id.allCategoriesRV);
-        seeAllCountries =  countriesSection.findViewById(R.id.seeAllCountries);
-        allCountriesRV = countriesSection.findViewById(R.id.allCountriesRV);
+//        seeAllCountries =  countriesSection.findViewById(R.id.seeAllCountries);
+//        allCountriesRV = countriesSection.findViewById(R.id.allCountriesRV);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -77,6 +79,12 @@ public class HomeFragment extends Fragment implements onMealClick, HomeView, onC
             @Override
             public void onClick(View view) {
                 homePresenter.showDayMealDetails();
+            }
+        });
+        seeAllCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(view.getContext(), AllCategoriesActivity.class));
             }
         });
     }
@@ -135,6 +143,8 @@ public class HomeFragment extends Fragment implements onMealClick, HomeView, onC
 
     @Override
     public void onCategorySelected(Category category) {
-
+        Intent intent = new Intent(requireContext(), CategoryMealsActivity.class);
+        intent.putExtra("category", category);
+        startActivity(intent);
     }
 }

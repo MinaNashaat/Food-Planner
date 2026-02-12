@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface UserPlannedMealsDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(UserPlannedMeal userPlannedMeal);
 
     @Delete
@@ -27,5 +27,11 @@ public interface UserPlannedMealsDao {
 
     @Query("SELECT * FROM user_planned_meals WHERE email = :email")
     LiveData<List<UserPlannedMeal>> getAllUserPlannedMeals(String email);
+
+    @Query("DELETE FROM user_planned_meals")
+    void deleteAll();
+
+    @Query("SELECT COUNT(*) FROM user_planned_meals WHERE idMeal = :id")
+    int isMealExists(String id);
 
 }

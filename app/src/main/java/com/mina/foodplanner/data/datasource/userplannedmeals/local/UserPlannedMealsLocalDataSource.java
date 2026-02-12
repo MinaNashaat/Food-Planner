@@ -33,4 +33,8 @@ public class UserPlannedMealsLocalDataSource {
         return userPlannedMealsDao.getAllUserPlannedMeals(email);
     }
 
+    public int isFavourite(String id){
+        return userPlannedMealsDao.isMealExists(id);
+    }
+
 }

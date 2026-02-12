@@ -75,6 +75,12 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                     listener.onClick(meal);
                 }
             });
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    listener.showMealDetails(meal);
+                }
+            });
         }
     }
 }

@@ -2,4 +2,6 @@
     <string name="app_name">Food Planner</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="default_web_client_id">871030953857-rjglr3lb44g2vi55gacve062m7dktvns.apps.googleusercontent.com</string>
+
 </resources>

@@ -27,6 +27,7 @@ import com.mina.foodplanner.allcategories.view.AllCategoriesActivity;
 import com.mina.foodplanner.allingredients.view.AllIngredientsActivity;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.home.view.onMealClick;
+import com.mina.foodplanner.recipedetails.view.RecipeDetailsActivity;
 import com.mina.foodplanner.search.presenter.SearchPresenter;
 import com.mina.foodplanner.search.presenter.SearchPresenterImp;
 
@@ -122,7 +123,9 @@ public class SearchFragment extends Fragment implements SearchView, onMealSelect
 
     @Override
     public void showMealDetails(Meal meal) {
-
+        Intent intent = new Intent(requireActivity(), RecipeDetailsActivity.class);
+        intent.putExtra("meal", meal);
+        startActivity(intent);
     }
 
     @Override

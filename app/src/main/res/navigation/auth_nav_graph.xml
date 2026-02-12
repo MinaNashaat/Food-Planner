@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.mina.foodplanner.LoginFragment"
+        android:name="com.mina.foodplanner.login.view.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.mina.foodplanner.SignUpFragment"
+        android:name="com.mina.foodplanner.signup.view.SignUpFragment"
         android:label="SignUpFragment"
         tools:layout="@layout/fragment_sign_up">
         <action

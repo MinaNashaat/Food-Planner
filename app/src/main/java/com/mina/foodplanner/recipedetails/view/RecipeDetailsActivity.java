@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mina.foodplanner.R;
+import com.mina.foodplanner.data.FavoriteRepo;
 import com.mina.foodplanner.data.model.Meal;
+import com.mina.foodplanner.favorites.presenter.FavoritePresenter;
+import com.mina.foodplanner.favorites.presenter.FavoritePresenterImp;
 import com.mina.foodplanner.recipedetails.presenter.RecipeDetailsPresenter;
 import com.mina.foodplanner.recipedetails.presenter.RecipeDetailsPresenterImp;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -33,7 +36,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
     YouTubePlayerView youtubePlayerView;
     RecipeDetailsPresenter presenter;
     IngredientsAdapter ingredientsAdapter;
-
+    FavoritePresenter favoritePresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         ingredientsRVAct = findViewById(R.id.ingredientsRVAct);
         youtubePlayerView = findViewById(R.id.youtubePlayerView);
         presenter = new RecipeDetailsPresenterImp(this,this);
+        favoritePresenter = new FavoritePresenterImp(getApplication());
         ingredientsAdapter = new IngredientsAdapter();
         ingredientsRVAct.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         ingredientsRVAct.setAdapter(ingredientsAdapter);
@@ -63,6 +67,19 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
                 presenter.addToPlanner(meal,RecipeDetailsActivity.this);
             }
         });
+        btnBackAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
+        favAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                favoritePresenter.insertMeal(meal);
+            }
+        });
     }
 
     @Override
@@ -73,6 +90,7 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         Glide.with(this)
                 .load(meal.getStrMealThumb())
                 .into(recipeImageAct);
+        presenter.isFavourite(meal);
     }
 
     @Override
@@ -91,5 +109,11 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
     @Override
     public void showIngredients(List<Pair<String, String>> ingredients) {
         ingredientsAdapter.setIngredientsList(ingredients);
+    }
+
+    @Override
+    public void showOrHideFavourite(boolean isFavourite) {
+        if(isFavourite)
+            favAct.setImageResource(R.drawable.baseline_favorite_24);
     }
 }

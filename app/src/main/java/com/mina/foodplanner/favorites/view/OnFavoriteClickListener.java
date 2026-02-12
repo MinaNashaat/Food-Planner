@@ -4,4 +4,5 @@ import com.mina.foodplanner.data.model.Meal;
 
 public interface OnFavoriteClickListener {
     void onClick(Meal meal);
+    void showMealDetails(Meal meal);
 }

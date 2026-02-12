@@ -31,4 +31,8 @@ public class PlannerRepo {
         return userPlannedMealsLocalDataSource.getAllUserPlannedMeals(email);
     }
 
+    public int isFavourite(String id){
+        return userPlannedMealsLocalDataSource.isFavourite(id);
+    }
+
 }

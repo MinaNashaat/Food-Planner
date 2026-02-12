@@ -3,6 +3,7 @@ package com.mina.foodplanner.planner.presenter;
 import android.content.Context;
 import androidx.lifecycle.LiveData;
 import com.mina.foodplanner.data.PlannerRepo;
+import com.mina.foodplanner.data.SharedPrefrencesRepo;
 import com.mina.foodplanner.data.model.PlannerDay;
 import com.mina.foodplanner.data.model.UserPlannedMeal;
 import com.mina.foodplanner.planner.view.WeeklyPlannerView;
@@ -15,15 +16,18 @@ import java.util.Locale;
 
 public class PlannerPresenterImp implements PlannerPresenter{
     PlannerRepo plannerRepo;
+    SharedPrefrencesRepo sharedPrefrencesRepo;
     WeeklyPlannerView weeklyPlannerView;
     public PlannerPresenterImp(Context context, WeeklyPlannerView weeklyPlannerView) {
         this.plannerRepo = new PlannerRepo(context);
+        sharedPrefrencesRepo = new SharedPrefrencesRepo(context);
         this.weeklyPlannerView = weeklyPlannerView;
     }
 
     @Override
     public LiveData<List<UserPlannedMeal>> getAllUserPlannedMeals() {
-        return plannerRepo.getAllUserPlannedMeals("mina@gmail.com");
+        String email = sharedPrefrencesRepo.getUserEmail();
+        return plannerRepo.getAllUserPlannedMeals(email);
     }
 
     @Override
@@ -33,7 +37,8 @@ public class PlannerPresenterImp implements PlannerPresenter{
 
     @Override
     public void updateMealsBasedonDay(PlannerDay plannerDay) {
-        List<UserPlannedMeal> userPlannedMeals = plannerRepo.getMealsForUserByDate("mina@gmail.com",plannerDay.fullDate);
+        String email = sharedPrefrencesRepo.getUserEmail();
+        List<UserPlannedMeal> userPlannedMeals = plannerRepo.getMealsForUserByDate(email,plannerDay.fullDate);
         weeklyPlannerView.updateWeeklyPlannerMeals(userPlannedMeals);
     }
 

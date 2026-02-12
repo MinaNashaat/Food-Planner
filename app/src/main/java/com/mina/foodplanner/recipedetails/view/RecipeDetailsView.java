@@ -10,6 +10,6 @@ public interface RecipeDetailsView {
     void showMeal(Meal meal);
     void playYoutubeVideo(String videoId);
     void showIngredients(List<Pair<String, String>> ingredients);
-
+    void showOrHideFavourite(boolean isFavourite);
 }
 
