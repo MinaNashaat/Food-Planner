@@ -23,11 +23,17 @@ import com.mina.foodplanner.recipedetails.view.RecipeDetailsActivity;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class FavouriteFragment extends Fragment implements OnFavoriteClickListener {
 
     RecyclerView favoritesRV;
     FavoriteAdapter favoriteAdapter;
     FavoritePresenter favoritePresenter;
+    CompositeDisposable compositeDisposable;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -41,6 +47,7 @@ public class FavouriteFragment extends Fragment implements OnFavoriteClickListen
         favoritesRV = view.findViewById(R.id.favoritesRV);
         favoritePresenter = new FavoritePresenterImp(getActivity().getApplication());
         favoriteAdapter = new FavoriteAdapter(this);
+        compositeDisposable = new CompositeDisposable();
         favoritesRV.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         favoritesRV.setAdapter(favoriteAdapter);
@@ -49,12 +56,22 @@ public class FavouriteFragment extends Fragment implements OnFavoriteClickListen
 
         favoritePresenter.getAllMeals();
 
-        favoritePresenter.getAllMeals().observe(getViewLifecycleOwner(), new Observer<List<Meal>>() {
-            @Override
-            public void onChanged(List<Meal> meals) {
-                favoriteAdapter.updateMealsList(meals);
-            }
-        });
+//        favoritePresenter.getAllMeals().observe(getViewLifecycleOwner(), new Observer<List<Meal>>() {
+//            @Override
+//            public void onChanged(List<Meal> meals) {
+//                favoriteAdapter.updateMealsList(meals);
+//            }
+//        });
+
+        compositeDisposable.add(
+                favoritePresenter.getAllMeals()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(meals -> {
+                            favoriteAdapter.updateMealsList(meals);
+                        })
+        );
+
 
     }
 

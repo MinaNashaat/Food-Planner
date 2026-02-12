@@ -1,8 +1,12 @@
 package com.mina.foodplanner.data;
 
-import com.mina.foodplanner.data.datasource.home.remote.CategoriesNetworkResponse;
+//import com.mina.foodplanner.data.datasource.home.remote.CategoriesNetworkResponse;
 import com.mina.foodplanner.data.datasource.home.remote.HomeRemoteDataSource;
-import com.mina.foodplanner.data.datasource.home.remote.RandomMealNetworkResponse;
+//import com.mina.foodplanner.data.datasource.home.remote.RandomMealNetworkResponse;
+import com.mina.foodplanner.data.model.Categories;
+import com.mina.foodplanner.data.model.Meals;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class HomeRepo {
 
@@ -12,12 +16,12 @@ public class HomeRepo {
         this.homeRemoteDataSource = new HomeRemoteDataSource();
     }
 
-    public void getDayMeal(RandomMealNetworkResponse randomMealNetworkResponse){
-        homeRemoteDataSource.getMealDay(randomMealNetworkResponse);
+    public Single<Meals> getDayMeal(){
+        return homeRemoteDataSource.getMealDay();
     }
 
-    public void getAllCategories(CategoriesNetworkResponse callBack){
-        homeRemoteDataSource.getAllCategories(callBack);
+    public Single<Categories> getAllCategories(){
+       return homeRemoteDataSource.getAllCategories();
     }
 
 

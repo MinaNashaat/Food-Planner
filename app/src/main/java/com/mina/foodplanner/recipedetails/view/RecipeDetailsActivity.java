@@ -14,8 +14,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.mina.foodplanner.R;
 import com.mina.foodplanner.data.FavoriteRepo;
+import com.mina.foodplanner.data.datasource.sharedprefrences.SharedPrefrencesDataSource;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.favorites.presenter.FavoritePresenter;
 import com.mina.foodplanner.favorites.presenter.FavoritePresenterImp;
@@ -57,6 +59,11 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         ingredientsRVAct.setAdapter(ingredientsAdapter);
         Meal meal = (Meal) getIntent().getSerializableExtra("meal");
 
+        SharedPrefrencesDataSource prefs = new SharedPrefrencesDataSource(this);
+
+        boolean isGuest = prefs.isGuest();
+
+
         presenter.loadMeal(meal);
 
         getLifecycle().addObserver(youtubePlayerView);
@@ -64,7 +71,12 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         addToPlanBtnAct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.addToPlanner(meal,RecipeDetailsActivity.this);
+                if (isGuest) {
+                    Snackbar.make(view, "Login required to add meal plan", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
+                presenter.addToPlanner(meal, RecipeDetailsActivity.this);
             }
         });
         btnBackAct.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +89,15 @@ public class RecipeDetailsActivity extends AppCompatActivity implements RecipeDe
         favAct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (isGuest) {
+                    Snackbar.make(view, "Login required to add favorites", Snackbar.LENGTH_LONG).show();
+                    return;
+                }
+
                 favoritePresenter.insertMeal(meal);
+                favAct.setImageResource(R.drawable.baseline_favorite_24);
+                Snackbar.make(view, "Meal added successfully", Snackbar.LENGTH_SHORT).show();
+
             }
         });
     }

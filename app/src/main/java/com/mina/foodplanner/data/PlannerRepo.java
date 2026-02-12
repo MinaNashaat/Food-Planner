@@ -9,29 +9,33 @@ import com.mina.foodplanner.data.model.UserPlannedMeal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+
 public class PlannerRepo {
     UserPlannedMealsLocalDataSource userPlannedMealsLocalDataSource;
 
     public PlannerRepo(Context context) {
         this.userPlannedMealsLocalDataSource = new UserPlannedMealsLocalDataSource(context);
     }
-    public void insertUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
-        userPlannedMealsLocalDataSource.insertUserPlannedMeal(userPlannedMeal);
+    public Completable  insertUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
+       return userPlannedMealsLocalDataSource.insertUserPlannedMeal(userPlannedMeal);
     }
 
-    public void deleteUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
-        userPlannedMealsLocalDataSource.deleteUserPlannedMeal(userPlannedMeal);
+    public Completable deleteUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
+        return userPlannedMealsLocalDataSource.deleteUserPlannedMeal(userPlannedMeal);
     }
 
-    public List<UserPlannedMeal> getMealsForUserByDate(String email, String date) {
+    public Single<List<UserPlannedMeal>> getMealsForUserByDate(String email, String date) {
         return userPlannedMealsLocalDataSource.getMealsForUserByDate(email, date);
     }
 
-    public LiveData<List<UserPlannedMeal>> getAllUserPlannedMeals(String email) {
+    public Flowable<List<UserPlannedMeal>> getAllUserPlannedMeals(String email) {
         return userPlannedMealsLocalDataSource.getAllUserPlannedMeals(email);
     }
 
-    public int isFavourite(String id){
+    public Single<Integer> isFavourite(String id){
         return userPlannedMealsLocalDataSource.isFavourite(id);
     }
 

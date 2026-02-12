@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,14 +33,21 @@ public class IngredientMealsActivity extends AppCompatActivity implements Ingred
     RecyclerView favoritesRVIngMealAct;
     IngredientMealsAdapter ingredientMealsAdapter;
     IngredientMealsPresenter ingredientMealsPresenter;
+    ImageView btnBackIngMealAct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingredient_meals);
         searchETIngMealAct = findViewById(R.id.searchETIngMealAct);
         favoritesRVIngMealAct = findViewById(R.id.favoritesRVIngMealAct);
+        btnBackIngMealAct = findViewById(R.id.btnBackIngMealAct);
         ingredientMealsPresenter = new IngredientMealsPresenterImp(this,this);
-
+        btnBackIngMealAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         Ingredient ingredient = (Ingredient) getIntent().getSerializableExtra("ingredient");
         ingredientMealsPresenter.getIngredientMeals(ingredient.getStrIngredient());
 
@@ -90,4 +99,5 @@ public class IngredientMealsActivity extends AppCompatActivity implements Ingred
     public void onIngredientMealClick(FilteredMeal meal) {
         ingredientMealsPresenter.getMealByID(meal.getIdMeal());
     }
+
 }

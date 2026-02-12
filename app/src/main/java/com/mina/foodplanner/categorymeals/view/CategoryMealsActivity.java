@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,7 @@ public class CategoryMealsActivity extends AppCompatActivity implements OnCatego
     RecyclerView favoritesRVCatMealAct;
     CategoryMealsPresenter categoryMealsPresenter;
     CategoryMealsAdapter categoryMealsAdapter;
+    ImageView btnBackCatMealAct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +44,13 @@ public class CategoryMealsActivity extends AppCompatActivity implements OnCatego
         Category category = (Category) getIntent().getSerializableExtra("category");
         searchETCatMealAct = findViewById(R.id.searchETCatMealAct);
         favoritesRVCatMealAct = findViewById(R.id.favoritesRVCatMealAct);
-
+        btnBackCatMealAct = findViewById(R.id.btnBackCatMealAct);
+        btnBackCatMealAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         Log.d("minanashaat" ,"Cat name = "+ category.getStrCategory());
 
         categoryMealsPresenter = new CategoryMealsPresenterImp(this,this);
@@ -95,5 +104,11 @@ public class CategoryMealsActivity extends AppCompatActivity implements OnCatego
     @Override
     public void onFailure(String errorMessage) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        categoryMealsPresenter.onDestroy();
     }
 }

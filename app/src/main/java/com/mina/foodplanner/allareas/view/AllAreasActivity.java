@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +27,7 @@ public class AllAreasActivity extends AppCompatActivity implements AllAreasView,
     RecyclerView favoritesRVAreaAct;
     AreasAdapter adapter;
     AllAreasPresenter presenter;
-
+    ImageView btnBackAreaAct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +35,13 @@ public class AllAreasActivity extends AppCompatActivity implements AllAreasView,
 
         searchETAreaAct = findViewById(R.id.searchETAreaAct);
         favoritesRVAreaAct = findViewById(R.id.favoritesRVAreaAct);
-
+        btnBackAreaAct = findViewById(R.id.btnBackAreaAct);
+        btnBackAreaAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         favoritesRVAreaAct.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new AreasAdapter();
@@ -67,4 +75,10 @@ public class AllAreasActivity extends AppCompatActivity implements AllAreasView,
 
     @Override public void noInternetAreas() {}
     @Override public void onFailureAreas(String errorMessage) {}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
 }

@@ -147,4 +147,10 @@ public class HomeFragment extends Fragment implements onMealClick, HomeView, onC
         intent.putExtra("category", category);
         startActivity(intent);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        homePresenter.onDestroy();
+    }
 }

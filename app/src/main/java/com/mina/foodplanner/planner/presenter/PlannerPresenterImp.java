@@ -14,32 +14,56 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class PlannerPresenterImp implements PlannerPresenter{
     PlannerRepo plannerRepo;
     SharedPrefrencesRepo sharedPrefrencesRepo;
     WeeklyPlannerView weeklyPlannerView;
+    CompositeDisposable disposable;
+
     public PlannerPresenterImp(Context context, WeeklyPlannerView weeklyPlannerView) {
         this.plannerRepo = new PlannerRepo(context);
         sharedPrefrencesRepo = new SharedPrefrencesRepo(context);
         this.weeklyPlannerView = weeklyPlannerView;
+        disposable = new CompositeDisposable();
     }
 
     @Override
-    public LiveData<List<UserPlannedMeal>> getAllUserPlannedMeals() {
+    public Flowable<List<UserPlannedMeal>> getAllUserPlannedMeals() {
         String email = sharedPrefrencesRepo.getUserEmail();
         return plannerRepo.getAllUserPlannedMeals(email);
     }
 
     @Override
     public void deleteUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
-        plannerRepo.deleteUserPlannedMeal(userPlannedMeal);
+//        plannerRepo.deleteUserPlannedMeal(userPlannedMeal);
+
+        disposable.add(
+                plannerRepo.deleteUserPlannedMeal(userPlannedMeal)
+                        .subscribeOn(Schedulers.io())
+                        .subscribe()
+        );
     }
 
     @Override
     public void updateMealsBasedonDay(PlannerDay plannerDay) {
         String email = sharedPrefrencesRepo.getUserEmail();
-        List<UserPlannedMeal> userPlannedMeals = plannerRepo.getMealsForUserByDate(email,plannerDay.fullDate);
-        weeklyPlannerView.updateWeeklyPlannerMeals(userPlannedMeals);
+//        List<UserPlannedMeal> userPlannedMeals = plannerRepo.getMealsForUserByDate(email,plannerDay.fullDate);
+//        weeklyPlannerView.updateWeeklyPlannerMeals(userPlannedMeals);
+
+        disposable.add(
+                plannerRepo.getMealsForUserByDate(email, plannerDay.fullDate)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                meals -> weeklyPlannerView.updateWeeklyPlannerMeals(meals)
+                        )
+        );
+
     }
 
     @Override
@@ -64,6 +88,11 @@ public class PlannerPresenterImp implements PlannerPresenter{
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
         weeklyPlannerView.getNextSevenDays(days);
+    }
+
+    @Override
+    public void onDestroy() {
+        disposable.clear();
     }
 
 }

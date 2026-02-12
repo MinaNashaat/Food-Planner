@@ -1,8 +1,12 @@
 package com.mina.foodplanner.data;
 
-import com.mina.foodplanner.data.datasource.filteredmeals.remote.FilteredMealsNetworkResponse;
+//import com.mina.foodplanner.data.datasource.filteredmeals.remote.FilteredMealsNetworkResponse;
 import com.mina.foodplanner.data.datasource.filteredmeals.remote.FilteredMealsRemoteDataSource;
-import com.mina.foodplanner.data.datasource.filteredmeals.remote.MealByIDNetworkResponse;
+//import com.mina.foodplanner.data.datasource.filteredmeals.remote.MealByIDNetworkResponse;
+import com.mina.foodplanner.data.model.FilterResult;
+import com.mina.foodplanner.data.model.Meals;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class FilteredMealsRepo {
     FilteredMealsRemoteDataSource categoryMealsRemoteDataSource;
@@ -11,20 +15,20 @@ public class FilteredMealsRepo {
         this.categoryMealsRemoteDataSource = new FilteredMealsRemoteDataSource();
     }
 
-    public void getCategoryMeals(String categoryMealName, FilteredMealsNetworkResponse callBack){
-        categoryMealsRemoteDataSource.getCategoryMeals(categoryMealName, callBack);
+    public Single<FilterResult> getCategoryMeals(String categoryMealName){
+       return categoryMealsRemoteDataSource.getCategoryMeals(categoryMealName);
     }
 
-    public void getMealByID(String mealID, MealByIDNetworkResponse callBack){
-        categoryMealsRemoteDataSource.getMealById(mealID,callBack);
+    public Single<Meals> getMealByID(String mealID){
+        return categoryMealsRemoteDataSource.getMealById(mealID);
     }
 
-    public void getIngredientsMeals(String ingredientMealName, FilteredMealsNetworkResponse callBack){
-        categoryMealsRemoteDataSource.getIngredientMeals(ingredientMealName,callBack);
+    public Single<FilterResult> getIngredientsMeals(String ingredientMealName){
+        return categoryMealsRemoteDataSource.getIngredientMeals(ingredientMealName);
     }
 
-    public void getAreaMeals(String area, FilteredMealsNetworkResponse callBack){
-        categoryMealsRemoteDataSource.getAreaMeals(area, callBack);
+    public Single<FilterResult> getAreaMeals(String area){
+        return categoryMealsRemoteDataSource.getAreaMeals(area);
     }
 
 

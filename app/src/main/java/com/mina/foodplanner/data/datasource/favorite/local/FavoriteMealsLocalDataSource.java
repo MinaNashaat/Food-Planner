@@ -9,6 +9,10 @@ import com.mina.foodplanner.data.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+
 public class FavoriteMealsLocalDataSource {
     Context context;
     FavoriteMealsDao favoriteMealsDao ;
@@ -18,15 +22,19 @@ public class FavoriteMealsLocalDataSource {
         favoriteMealsDao = AppDatabase.getInstance(context).mealsDao();
     }
 
-    public void insertMeal(Meal meal){
-        favoriteMealsDao.insertMeal(meal);
+    public Completable insertMeal(Meal meal){
+        return favoriteMealsDao.insertMeal(meal);
 
     }
-    public void deleteMeal(Meal meal){
-        favoriteMealsDao.deleteMeal(meal);
+    public Completable deleteMeal(Meal meal){
+        return favoriteMealsDao.deleteMeal(meal);
     }
 
-    public LiveData<List<Meal>> getAllMeals(){
+    public Flowable<List<Meal>> getAllMeals(){
         return favoriteMealsDao.getAllMeals();
+    }
+
+    public Single<Boolean> isMealExists(String id){
+        return favoriteMealsDao.isMealExists(id);
     }
 }

@@ -24,12 +24,17 @@ import com.mina.foodplanner.recipedetails.view.RecipeDetailsActivity;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class WeeklyPlannerFragment extends Fragment implements WeeklyPlannerView, onUserPlannedMealClick, OnDayClick{
 
     RecyclerView mealsRV, daysRV;
     WeeklyPlannerAdapter weeklyPlannerAdapter;
     DaysAdapter daysAdapter;
     PlannerPresenter plannerPresenter;
+    CompositeDisposable disposable;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class WeeklyPlannerFragment extends Fragment implements WeeklyPlannerView
         super.onViewCreated(view, savedInstanceState);
         mealsRV = view.findViewById(R.id.mealsRV);
         daysRV = view.findViewById(R.id.daysRV);
-
+        disposable = new CompositeDisposable();
         plannerPresenter = new PlannerPresenterImp(view.getContext(),this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext());
         mealsRV.setLayoutManager(linearLayoutManager);
@@ -59,7 +64,14 @@ public class WeeklyPlannerFragment extends Fragment implements WeeklyPlannerView
 
         plannerPresenter.generateNext7Days();
 
-
+        disposable.add(
+                plannerPresenter.getAllUserPlannedMeals()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                meals -> weeklyPlannerAdapter.setUserPlannedMealsList(meals)
+                        )
+        );
 
 //        plannerPresenter.getAllUserPlannedMeals().observe(getViewLifecycleOwner(), new Observer<List<UserPlannedMeal>>() {
 //            @Override
@@ -96,4 +108,12 @@ public class WeeklyPlannerFragment extends Fragment implements WeeklyPlannerView
     public void onDayClick(PlannerDay day) {
         plannerPresenter.updateMealsBasedonDay(day);
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
+        plannerPresenter.onDestroy();
+    }
+
 }

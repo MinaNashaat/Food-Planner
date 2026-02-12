@@ -43,9 +43,11 @@ import com.mina.foodplanner.data.db.AppDatabase;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.data.model.UserPlannedMeal;
 
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class LoginFragment extends Fragment {
 
-    TextView signUpText;
+    TextView signUpText,guest;
     private Button loginBtn;
     private EditText emailET, passwordET;
     private FirebaseAuth mAuth;
@@ -97,6 +99,7 @@ public class LoginFragment extends Fragment {
         emailET = view.findViewById(R.id.emailET);
         passwordET = view.findViewById(R.id.passwordET);
         googleBtn = view.findViewById(R.id.googleBtn);
+        guest = view.findViewById(R.id.guest);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(
                     GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(getString(R.string.default_web_client_id))
@@ -107,7 +110,21 @@ public class LoginFragment extends Fragment {
 
         googleBtn.setOnClickListener(v -> signInWithGoogle());
 
+        guest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPrefrencesDataSource prefs = new SharedPrefrencesDataSource(requireContext());
 
+                prefs.saveGuest();
+
+
+                Intent intent = new Intent(requireActivity(), HomeActivity.class);
+                intent.putExtra("isGuest", true);
+                startActivity(intent);
+
+                requireActivity().finish();
+            }
+        });
         mAuth = FirebaseAuth.getInstance();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,9 +239,10 @@ public class LoginFragment extends Fragment {
                         Meal meal = doc.toObject(Meal.class);
 
                         if (meal != null) {
-                            new Thread(() ->
-                                    database.mealsDao().insertMeal(meal)
-                            ).start();
+                            database.mealsDao()
+                                    .insertMeal(meal)
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe();
                         }
                     }
                 });
@@ -235,23 +253,21 @@ public class LoginFragment extends Fragment {
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
 
-                    Log.d("RESTORE", "Planned size: " + queryDocumentSnapshots.size());
-
                     for (DocumentSnapshot document : queryDocumentSnapshots) {
 
                         UserPlannedMeal meal =
                                 document.toObject(UserPlannedMeal.class);
 
                         if (meal != null) {
-
                             database.userPlannedMealsDao()
-                                    .insert(meal);
-
-                            Log.d("RESTORE", "Inserted: " + meal.getStrMeal());
+                                    .insert(meal)
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe();
                         }
                     }
                 });
     }
+
 
 
 }

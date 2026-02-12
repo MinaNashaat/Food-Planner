@@ -1,6 +1,7 @@
 package com.mina.foodplanner.data;
 
 import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 
@@ -9,26 +10,35 @@ import com.mina.foodplanner.data.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+
 
 public class FavoriteRepo {
 
     FavoriteMealsLocalDataSource favoriteMealsLocalDataSource;
 
-    public FavoriteRepo(Application application) {
-        this.favoriteMealsLocalDataSource = new FavoriteMealsLocalDataSource(application);
+    public FavoriteRepo(Context context) {
+        this.favoriteMealsLocalDataSource = new FavoriteMealsLocalDataSource(context);
     }
 
-    public void insertMeal(Meal meal){
-        favoriteMealsLocalDataSource.insertMeal(meal);
+    public Completable insertMeal(Meal meal){
+        return favoriteMealsLocalDataSource.insertMeal(meal);
 
     }
-    public void deleteMeal(Meal meal){
-        favoriteMealsLocalDataSource.deleteMeal(meal);
+    public Completable deleteMeal(Meal meal){
+        return favoriteMealsLocalDataSource.deleteMeal(meal);
     }
 
-    public LiveData<List<Meal>> getAllMeals(){
+    public Flowable<List<Meal>> getAllMeals(){
         return favoriteMealsLocalDataSource.getAllMeals();
     }
+
+    public Single<Boolean> isFavourite(String id){
+        return favoriteMealsLocalDataSource.isMealExists(id);
+    }
+
 
 
 }

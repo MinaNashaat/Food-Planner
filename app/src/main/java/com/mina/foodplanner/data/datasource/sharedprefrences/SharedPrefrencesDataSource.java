@@ -9,6 +9,7 @@ public class SharedPrefrencesDataSource {
     private static final String KEY_EMAIL = "email";
     private static final String KEY_NAME = "name";
     private static final String KEY_LOGGED_IN = "logged_in";
+    private static final String KEY_IS_GUEST = "is_guest";
 
     private final SharedPreferences prefs;
     private final SharedPreferences.Editor editor;
@@ -22,8 +23,10 @@ public class SharedPrefrencesDataSource {
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_NAME, name);
         editor.putBoolean(KEY_LOGGED_IN, true);
+        editor.putBoolean(KEY_IS_GUEST, false);
         editor.apply();
     }
+
 
     public boolean isLoggedIn() {
         return prefs.getBoolean(KEY_LOGGED_IN, false);
@@ -48,5 +51,19 @@ public class SharedPrefrencesDataSource {
     public String getUserEmail() {
         return prefs.getString("email", null);
     }
+
+    public void saveGuest() {
+        editor.putString(KEY_EMAIL, "guest@local");
+        editor.putString(KEY_NAME, "Guest");
+        editor.putBoolean(KEY_LOGGED_IN, true);
+        editor.putBoolean(KEY_IS_GUEST, true);
+        editor.apply();
+    }
+
+
+    public boolean isGuest() {
+        return prefs.getBoolean(KEY_IS_GUEST, false);
+    }
+
 
 }

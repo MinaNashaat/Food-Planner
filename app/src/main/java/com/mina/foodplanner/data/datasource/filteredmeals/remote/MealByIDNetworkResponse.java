@@ -1,11 +1,11 @@
-package com.mina.foodplanner.data.datasource.filteredmeals.remote;
-
-import com.mina.foodplanner.data.model.Meal;
-
-import java.util.List;
-
-public interface MealByIDNetworkResponse {
-    void onSuccess(List<Meal> meals);
-    void noInternet();
-    void onFailure(String errorMessage);
-}
+//package com.mina.foodplanner.data.datasource.filteredmeals.remote;
+//
+//import com.mina.foodplanner.data.model.Meal;
+//
+//import java.util.List;
+//
+//public interface MealByIDNetworkResponse {
+//    void onSuccess(List<Meal> meals);
+//    void noInternet();
+//    void onFailure(String errorMessage);
+//}

@@ -6,15 +6,16 @@ import com.mina.foodplanner.data.model.Categories;
 import com.mina.foodplanner.data.model.Ingredients;
 import com.mina.foodplanner.data.model.Meals;
 
+import io.reactivex.rxjava3.core.Single;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface HomeAPIService {
     @GET("random.php")
-    Call<Meals> getRandomMeal();  // i made this network response only
+    Single<Meals> getRandomMeal();  // i made this network response only
 
     @GET("categories.php")
-    Call<Categories> getAllCategories();
+    Single<Categories> getAllCategories();
 
     @GET("list.php?c=list")
     Call<AllCategories> getAllCategoriesString();

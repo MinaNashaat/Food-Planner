@@ -132,4 +132,10 @@ public class SearchFragment extends Fragment implements SearchView, onMealSelect
     public void addToFav(Meal meal) {
         searchPresenter.addToFavorite(meal);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        searchPresenter.onDestroy();
+    }
 }

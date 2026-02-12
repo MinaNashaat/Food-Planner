@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -43,7 +44,12 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
 
         allCategoriesPresenter = new AllCategoriesPresenterImp(this);
         allCategoriesPresenter.getAllCategories();
-
+        btnBackCatAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         searchETCatAct.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -79,5 +85,11 @@ public class AllCategoriesActivity extends AppCompatActivity implements AllCateg
         Intent intent = new Intent(this, CategoryMealsActivity.class);
         intent.putExtra("category", category);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        allCategoriesPresenter.onDestroy();
     }
 }

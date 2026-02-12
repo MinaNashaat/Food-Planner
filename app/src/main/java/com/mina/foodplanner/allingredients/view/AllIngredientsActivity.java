@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +30,8 @@ public class AllIngredientsActivity extends AppCompatActivity implements Ingredi
     EditText searchETIngAct;
     RecyclerView favoritesRVIngAct;
     IngredientsAdapter ingredientsAdapter;
+    IngredientsPresenter presenter;
+    ImageView btnBackIngAct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +39,13 @@ public class AllIngredientsActivity extends AppCompatActivity implements Ingredi
 
         searchETIngAct = findViewById(R.id.searchETIngAct);
         favoritesRVIngAct = findViewById(R.id.favoritesRVIngAct);
-
+        btnBackIngAct = findViewById(R.id.btnBackIngAct);
+        btnBackIngAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         favoritesRVIngAct.setLayoutManager(gridLayoutManager);
@@ -44,7 +54,7 @@ public class AllIngredientsActivity extends AppCompatActivity implements Ingredi
         ingredientsAdapter.setOnIngredientClick(this);
         favoritesRVIngAct.setAdapter(ingredientsAdapter);
 
-        IngredientsPresenter presenter = new IngredientsPresenterImp(this);
+        presenter = new IngredientsPresenterImp(this);
 
         presenter.getAllIngredients();
 
@@ -79,5 +89,11 @@ public class AllIngredientsActivity extends AppCompatActivity implements Ingredi
         Intent intent = new Intent(this, IngredientMealsActivity.class);
         intent.putExtra("ingredient", ingredient);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
     }
 }

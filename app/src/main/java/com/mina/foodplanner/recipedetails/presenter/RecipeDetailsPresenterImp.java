@@ -2,12 +2,14 @@ package com.mina.foodplanner.recipedetails.presenter;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 
+import com.mina.foodplanner.data.FavoriteRepo;
 import com.mina.foodplanner.data.IngredientsRepo;
 import com.mina.foodplanner.data.PlannerRepo;
 import com.mina.foodplanner.data.SharedPrefrencesRepo;
-import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsNetworkResponse;
+//import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsNetworkResponse;
 import com.mina.foodplanner.data.model.Ingredient;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.data.model.UserPlannedMeal;
@@ -22,14 +24,22 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter {
     RecipeDetailsView view;
     PlannerRepo plannerRepo;
+    FavoriteRepo favoriteRepo;
     SharedPrefrencesRepo sharedPrefrencesRepo;
+    CompositeDisposable disposable;
     public RecipeDetailsPresenterImp(RecipeDetailsView view, Context context) {
         this.view = view;
         plannerRepo = new PlannerRepo(context);
         sharedPrefrencesRepo = new SharedPrefrencesRepo(context);
+        disposable = new CompositeDisposable();
+        favoriteRepo = new FavoriteRepo(context);
     }
 
     @Override
@@ -59,13 +69,18 @@ public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter {
 
                     String selectedDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                             .format(selectedCalendar.getTime());
+
                     String email = sharedPrefrencesRepo.getUserEmail();
-                    plannerRepo.insertUserPlannedMeal(
-                            new UserPlannedMeal(
-                                    email,
-                                    selectedDate,
-                                    meal
-                            )
+
+                    UserPlannedMeal plannedMeal =
+                            new UserPlannedMeal(email, selectedDate, meal);
+
+                    disposable.add(
+                            plannerRepo.insertUserPlannedMeal(plannedMeal)
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(
+                                    )
                     );
                 },
                 calendar.get(Calendar.YEAR),
@@ -79,12 +94,22 @@ public class RecipeDetailsPresenterImp implements RecipeDetailsPresenter {
         datePickerDialog.show();
     }
 
+
     @Override
     public void isFavourite(Meal meal) {
-        int count = plannerRepo.isFavourite(meal.getIdMeal());
-        boolean isFavourite = count != 0;
-        view.showOrHideFavourite(isFavourite);
+
+        disposable.add(
+                favoriteRepo.isFavourite(meal.getIdMeal())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                view::showOrHideFavourite,
+                                Throwable::printStackTrace
+                        )
+        );
     }
+
+
 
 
     private static String extractYoutubeVideoId(String url) {

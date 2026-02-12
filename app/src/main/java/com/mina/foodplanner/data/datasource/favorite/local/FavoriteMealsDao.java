@@ -11,18 +11,26 @@ import com.mina.foodplanner.data.model.Meal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+
 @Dao
 public interface FavoriteMealsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertMeal(Meal meal);
+    Completable insertMeal(Meal meal);
 
     @Delete
-    void deleteMeal(Meal meal);
+    Completable  deleteMeal(Meal meal);
 
     @Query("select * from meals")
-    LiveData<List<Meal>> getAllMeals();
+    Flowable<List<Meal>> getAllMeals();
 
     @Query("DELETE FROM meals")
-    void deleteAll();
+    Completable  deleteAll();
+
+    @Query("SELECT EXISTS(SELECT 1 FROM meals WHERE idMeal = :id)")
+    Single<Boolean> isMealExists(String id);
+
 }

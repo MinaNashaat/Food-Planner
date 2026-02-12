@@ -4,4 +4,5 @@ public interface AreaMealsPresenter {
     void getAreaMeals(String area);
     void searchMeals(String query);
     void getMealByID(String mealID);
+    void onDestroy();
 }

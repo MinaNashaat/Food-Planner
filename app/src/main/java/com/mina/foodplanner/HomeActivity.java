@@ -14,11 +14,14 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mina.foodplanner.data.IngredientsRepo;
-import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsNetworkResponse;
+//import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsNetworkResponse;
 import com.mina.foodplanner.data.datasource.ingredients.remote.IngredientsRemoteDataSource;
 import com.mina.foodplanner.data.model.Ingredient;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -45,6 +48,15 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("minanashaat","name = " + name);
 
         IngredientsRepo.getInstance().getIngredients();
+
+        IngredientsRepo.getInstance()
+                .getIngredients()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(ingredients -> {
+                    IngredientsRepo.ingredients = ingredients.ingredients;
+                });
+
 
     }
 }

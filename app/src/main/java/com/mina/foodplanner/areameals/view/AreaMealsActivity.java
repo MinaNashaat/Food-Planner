@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,7 @@ public class AreaMealsActivity extends AppCompatActivity implements AreaMealsVie
     AreaMealsAdapter adapter;
     EditText searchETAreaMealAct;
     RecyclerView favoritesRVAreaMealAct;
+    ImageView btnBackAreaMealAct;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +45,13 @@ public class AreaMealsActivity extends AppCompatActivity implements AreaMealsVie
         presenter.getAreaMeals(area);
         searchETAreaMealAct = findViewById(R.id.searchETAreaMealAct);
         favoritesRVAreaMealAct = findViewById(R.id.favoritesRVAreaMealAct);
-
+        btnBackAreaMealAct = findViewById(R.id.btnBackAreaMealAct);
+        btnBackAreaMealAct.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         favoritesRVAreaMealAct.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new AreaMealsAdapter();
@@ -80,4 +89,10 @@ public class AreaMealsActivity extends AppCompatActivity implements AreaMealsVie
 
     @Override public void noInternet() {}
     @Override public void onFailure(String errorMessage) {}
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.onDestroy();
+    }
 }

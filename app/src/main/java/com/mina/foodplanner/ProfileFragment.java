@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,12 +27,16 @@ import com.mina.foodplanner.data.db.AppDatabase;
 import com.mina.foodplanner.data.model.Meal;
 import com.mina.foodplanner.data.model.UserPlannedMeal;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class ProfileFragment extends Fragment {
 
     FirebaseFirestore firestore;
     AppDatabase database;
     Button sybcBTN, logoutBtn;
     TextView profileNameTV, profileEmailTV;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -51,6 +56,13 @@ public class ProfileFragment extends Fragment {
         profileEmailTV = view.findViewById(R.id.profileEmailTV);
 
         SharedPrefrencesDataSource sharedPrefrencesDataSource = new SharedPrefrencesDataSource(requireContext());
+
+
+        if (sharedPrefrencesDataSource.isGuest()) {
+            sybcBTN.setEnabled(false);
+            sybcBTN.setAlpha(0.5f);
+//            sybcBTN.setText("Login required to sync");
+        }
 
         String name = sharedPrefrencesDataSource.getUserName();
         String email = sharedPrefrencesDataSource.getUserEmail();
@@ -75,13 +87,30 @@ public class ProfileFragment extends Fragment {
                 GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(requireContext(), gso);
 
                 googleSignInClient.signOut();
-                AppDatabase.getInstance(view.getContext()).mealsDao().deleteAll();
-                AppDatabase.getInstance(view.getContext()).userPlannedMealsDao().deleteAll();
-                Intent intent = new Intent(requireActivity(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
 
-                Toast.makeText(requireContext(), "Logged out successfully", Toast.LENGTH_SHORT).show();
+                disposable.add(
+                        AppDatabase.getInstance(requireContext())
+                                .mealsDao()
+                                .deleteAll()
+                                .andThen(
+                                        AppDatabase.getInstance(requireContext())
+                                                .userPlannedMealsDao()
+                                                .deleteAll()
+                                )
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                                .subscribe(
+                                        () -> {
+                                            Intent intent = new Intent(requireActivity(), MainActivity.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+
+                                            Snackbar.make(requireView(), "Logged out successfully", Snackbar.LENGTH_SHORT).show();
+
+                                        }
+                                )
+                );
+
             }
         });
 
@@ -127,43 +156,60 @@ public class ProfileFragment extends Fragment {
 
     private void uploadNewData(String email) {
 
-        database.mealsDao()
-                .getAllMeals()
-                .observe(getViewLifecycleOwner(), meals -> {
+        CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-                    if (meals == null) return;
+        compositeDisposable.add(
+                database.mealsDao()
+                        .getAllMeals()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .subscribe(meals -> {
 
-                    for (Meal meal : meals) {
-                        firestore.collection("users")
-                                .document(email)
-                                .collection("favorites")
-                                .document(meal.getIdMeal())
-                                .set(meal);
-                    }
-                });
+                            if (meals == null) return;
 
-        database.userPlannedMealsDao()
-                .getAllUserPlannedMeals(email)
-                .observe(getViewLifecycleOwner(), plannedMeals -> {
+                            for (Meal meal : meals) {
+                                firestore.collection("users")
+                                        .document(email)
+                                        .collection("favorites")
+                                        .document(meal.getIdMeal())
+                                        .set(meal);
+                            }
 
-                    if (plannedMeals == null || plannedMeals.isEmpty()) return;
+                        }, throwable -> {
+                            throwable.printStackTrace();
+                        })
+        );
 
-                    for (UserPlannedMeal meal : plannedMeals) {
 
-                        String safeDate = meal.getDate().replace("/", "-");
+        CompositeDisposable disposable = new CompositeDisposable();
 
-                        String docId = meal.getIdMeal() + "_" + safeDate;
+        disposable.add(
+                database.userPlannedMealsDao()
+                        .getAllUserPlannedMeals(email)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.io())
+                        .subscribe(plannedMeals -> {
 
-                        firestore.collection("users")
-                                .document(email)
-                                .collection("plannedMeals")
-                                .document(docId)
-                                .set(meal);
+                            if (plannedMeals == null || plannedMeals.isEmpty()) return;
 
-                    }
-                });
+                            for (UserPlannedMeal meal : plannedMeals) {
 
-        Toast.makeText(requireContext(), "Sync Completed", Toast.LENGTH_SHORT).show();
+                                String safeDate = meal.getDate().replace("/", "-");
+                                String docId = meal.getIdMeal() + "_" + safeDate;
+
+                                firestore.collection("users")
+                                        .document(email)
+                                        .collection("plannedMeals")
+                                        .document(docId)
+                                        .set(meal);
+                            }
+
+                        })
+        );
+
+
+        Snackbar.make(requireView(), "Sync Completed",Snackbar.LENGTH_SHORT).show();
+
     }
 
 }

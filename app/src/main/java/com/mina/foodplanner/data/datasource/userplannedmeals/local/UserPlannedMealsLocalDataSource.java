@@ -9,6 +9,10 @@ import com.mina.foodplanner.data.model.UserPlannedMeal;
 
 import java.util.List;
 
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+
 public class UserPlannedMealsLocalDataSource {
 
     private UserPlannedMealsDao userPlannedMealsDao;
@@ -17,23 +21,23 @@ public class UserPlannedMealsLocalDataSource {
         userPlannedMealsDao = AppDatabase.getInstance(context).userPlannedMealsDao();
     }
 
-    public void insertUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
-        userPlannedMealsDao.insert(userPlannedMeal);
+    public Completable  insertUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
+        return userPlannedMealsDao.insert(userPlannedMeal);
     }
 
-    public void deleteUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
-        userPlannedMealsDao.delete(userPlannedMeal);
+    public Completable deleteUserPlannedMeal(UserPlannedMeal userPlannedMeal) {
+        return userPlannedMealsDao.delete(userPlannedMeal);
     }
 
-    public List<UserPlannedMeal> getMealsForUserByDate(String email, String date) {
+    public Single<List<UserPlannedMeal>> getMealsForUserByDate(String email, String date) {
         return userPlannedMealsDao.getMealsForUserByDate(email, date);
     }
 
-    public LiveData<List<UserPlannedMeal>> getAllUserPlannedMeals(String email) {
+    public Flowable<List<UserPlannedMeal>> getAllUserPlannedMeals(String email) {
         return userPlannedMealsDao.getAllUserPlannedMeals(email);
     }
 
-    public int isFavourite(String id){
+    public Single<Integer> isFavourite(String id){
         return userPlannedMealsDao.isMealExists(id);
     }
 

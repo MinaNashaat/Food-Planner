@@ -15,5 +15,6 @@ public interface HomePresenter {
     void showAllCountries();
     void showAreaMeals(AreaString areaString);
 
+    void onDestroy();
 
 }

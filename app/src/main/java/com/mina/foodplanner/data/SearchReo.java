@@ -3,9 +3,12 @@ package com.mina.foodplanner.data;
 import android.content.Context;
 
 import com.mina.foodplanner.data.datasource.favorite.local.FavoriteMealsLocalDataSource;
-import com.mina.foodplanner.data.datasource.search.remote.SearchByNameNetworkResponse;
+//import com.mina.foodplanner.data.datasource.search.remote.SearchByNameNetworkResponse;
 import com.mina.foodplanner.data.datasource.search.remote.SearchRemoteDataSource;
 import com.mina.foodplanner.data.model.Meal;
+import com.mina.foodplanner.data.model.Meals;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class SearchReo {
     SearchRemoteDataSource searchRemoteDataSource;
@@ -16,8 +19,8 @@ public class SearchReo {
         this.favoriteMealsLocalDataSource = new FavoriteMealsLocalDataSource(context);
     }
 
-    public void searchMealByName(String name, SearchByNameNetworkResponse callBack){
-        searchRemoteDataSource.searchMealsByName(name, callBack);
+    public Single<Meals> searchMealByName(String name){
+        return searchRemoteDataSource.searchMealsByName(name);
     }
 
     public void addToFavorite(Meal meal){
